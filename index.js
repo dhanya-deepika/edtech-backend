@@ -8,6 +8,11 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
+// Root route
+app.get("/", (req, res) => {
+  res.send("EdTech Backend API is running 🚀");
+});
+
 /* ---------------- ADMIN LOGIN ---------------- */
 app.post("/admin/login", async (req, res) => {
   const { username, password } = req.body;
@@ -92,7 +97,17 @@ app.get("/user/:id/class", async (req, res) => {
 });
 
 /* ---------------- START SERVER ---------------- */
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
+
+/* ---------------- GET ALL USERS ---------------- */
+app.get("/user", async (req, res) => {
+  const users = await prisma.user.findMany({
+    include: { class: true },
+  });
+  res.json(users);
+});
