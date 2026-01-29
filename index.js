@@ -111,3 +111,18 @@ app.get("/user", async (req, res) => {
   });
   res.json(users);
 });
+
+/* DELETE CLASS */
+app.delete("/class/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  await prisma.class.delete({ where: { id } });
+  res.json({ message: "Class deleted" });
+});
+
+/* DELETE USER */
+app.delete("/user/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  await prisma.user.delete({ where: { id } });
+  res.json({ message: "User deleted" });
+});
+
