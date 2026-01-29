@@ -13,8 +13,8 @@ app.get("/", (req, res) => {
   res.send("EdTech Backend API is running 🚀");
 });
 
-/* ---------------- ADMIN LOGIN ---------------- */
-app.post("/admin/login", async (req, res) => {
+
+app.post("/admin/login", async (req, res) => {    /*  ADMIN LOGIN  */
   const { username, password } = req.body;
 
   const admin = await prisma.admin.findFirst({
@@ -28,8 +28,8 @@ app.post("/admin/login", async (req, res) => {
   res.json({ message: "Login successful", admin });
 });
 
-/* ---------------- CREATE CLASS ---------------- */
-app.post("/class", async (req, res) => {
+
+app.post("/class", async (req, res) => {    /* CREATE CLASS  */
   const { name, description, image } = req.body;
 
   const newClass = await prisma.class.create({
@@ -43,14 +43,14 @@ app.post("/class", async (req, res) => {
   res.json(newClass);
 });
 
-/* ---------------- GET ALL CLASSES ---------------- */
-app.get("/class", async (req, res) => {
+
+app.get("/class", async (req, res) => {   /*  GET ALL CLASSES  */
   const classes = await prisma.class.findMany();
   res.json(classes);
 });
 
-/* ---------------- CREATE USER ---------------- */
-app.post("/user", async (req, res) => {
+
+app.post("/user", async (req, res) => {   /*  CREATE USER */
   const { email, password, classId } = req.body;
 
   const user = await prisma.user.create({
@@ -64,8 +64,8 @@ app.post("/user", async (req, res) => {
   res.json(user);
 });
 
-/* ---------------- USER LOGIN ---------------- */
-app.post("/user/login", async (req, res) => {
+
+app.post("/user/login", async (req, res) => { /*  USER LOGIN  */
   const { email, password } = req.body;
 
   const user = await prisma.user.findFirst({
@@ -80,8 +80,8 @@ app.post("/user/login", async (req, res) => {
   res.json(user);
 });
 
-/* ---------------- GET USER CLASS INFO ---------------- */
-app.get("/user/:id/class", async (req, res) => {
+
+app.get("/user/:id/class", async (req, res) => { /*  GET USER CLASS INFO  */
   const userId = Number(req.params.id);
 
   const user = await prisma.user.findUnique({
@@ -96,33 +96,33 @@ app.get("/user/:id/class", async (req, res) => {
   res.json(user.class);
 });
 
-/* ---------------- START SERVER ---------------- */
-const PORT = process.env.PORT || 5000;
+
+const PORT = process.env.PORT || 5000; /*  START SERVER  */
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
 
-/* ---------------- GET ALL USERS ---------------- */
-app.get("/user", async (req, res) => {
+
+app.get("/user", async (req, res) => {  /*  GET ALL USERS  */
   const users = await prisma.user.findMany({
     include: { class: true },
   });
   res.json(users);
 });
 
-/* DELETE CLASS */
-app.delete("/class/:id", async (req, res) => {
+
+
+app.delete("/class/:id", async (req, res) => {  /* DELETE CLASS */
   const id = Number(req.params.id);
   await prisma.class.delete({ where: { id } });
   res.json({ message: "Class deleted" });
 });
 
-/* DELETE USER */
-app.delete("/user/:id", async (req, res) => {
+
+app.delete("/user/:id", async (req, res) => {   /* DELETE USER */
   const id = Number(req.params.id);
   await prisma.user.delete({ where: { id } });
   res.json({ message: "User deleted" });
 });
-
